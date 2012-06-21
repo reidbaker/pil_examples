@@ -1,4 +1,8 @@
-﻿# Compiled source #
+﻿# Unique to this project #
+##########################
+.env/
+
+# Compiled source #
 ###################
 *.class
 
