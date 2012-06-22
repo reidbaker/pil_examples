@@ -1,11 +1,26 @@
 """Example of how to use the Python Imaging Library"""
 import os
-import sys
+import optparse
+
 from PIL import Image
 
 def main():
     """Retrives file entered, manipulates it and saves a copy with a new name"""
-    full_filename =  sys.argv[1]
+    # Parse options
+    parser = optparse.OptionParser()
+    parser.add_option("-f", dest="filename", 
+        help="Picture to modify", metavar="FILE")
+    (opts, args) = parser.parse_args()
+
+    # Give user feedback if they forget an option and exit
+    mandatory_options = ['filename']
+    for option in mandatory_options:
+        if not opts.__dict__[option]:
+            print "Mandatory option is missing\n"
+            parser.print_help()
+            exit(-1)
+
+    full_filename =  opts.filename
     if full_filename != None:
         try:
             image_data = Image.open(full_filename)
