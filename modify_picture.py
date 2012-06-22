@@ -28,23 +28,26 @@ def main():
     if full_filename != None:
         try:
             image_data = Image.open(full_filename)
-            new_image_data = rotate_image(image_data)
+            new_image_data = image_film(image_data)
             safe_save(full_filename, new_image_data)
         except IOError:
             print "Can not modify" + full_filename
     else:
         print 'Must enter photo in this directory'
 
-def rotate_image(image_data):
+def image_film(image_data):
     """
-    Rotates an image
+    Makes the image look like film
     Inputs:
         PIL Image
     Returns:
         Modified image data
     """
-    print 'rotating'
-    return image_data
+    print 'Filming'
+    import ImageOps
+    gray_image = ImageOps.grayscale(image_data)
+
+    return gray_image
 
 def safe_save(full_filename, new_image_data):
     """
