@@ -8,8 +8,12 @@ def main():
     """Retrives file entered, manipulates it and saves a copy with a new name"""
     # Parse options
     parser = optparse.OptionParser()
-    parser.add_option("-f", dest="filename", 
-        help="Picture to modify", metavar="FILE")
+    parser.add_option(
+        "-f",
+        dest="filename",
+        help="Picture to modify",
+        metavar="FILE"
+    )
     (opts, args) = parser.parse_args()
 
     # Give user feedback if they forget an option and exit
