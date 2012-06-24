@@ -47,10 +47,14 @@ def image_film(image_data):
     print 'Filming'
     film_size = (400, 300)
     border_size = 20
-    film_hole_size = (5,10)
+    film_hole_size = (5, 10)
 
     filmed_image = modify_photo(image_data, film_size)
-    filmed_image = ImageOps.expand(filmed_image, border=border_size, fill='black')
+    filmed_image = ImageOps.expand(
+        filmed_image,
+        border=border_size,
+        fill='black'
+    )
     # Crop to cut half of border from right and left of image
     crop_box = (
         int(round(border_size/2)),
@@ -64,7 +68,12 @@ def image_film(image_data):
     strip_upper_offset = int(round((border_size - film_hole_size[1])/2))
     strip_lower_offset = film_size[1] + border_size + strip_upper_offset
 
-    place_film_strip(filmed_image, strip_upper_offset, strip_lower_offset, film_hole_size)
+    place_film_strip(
+        filmed_image,
+        strip_upper_offset,
+        strip_lower_offset,
+        film_hole_size
+    )
     return filmed_image
 
 def place_film_strip(image_data, y_offset_upper, y_offset_lower, film_hole_size):
