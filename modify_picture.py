@@ -1,6 +1,7 @@
 """Example of how to use the Python Imaging Library"""
 import os
 import optparse
+import ImageOps
 
 from PIL import Image
 
@@ -44,10 +45,15 @@ def image_film(image_data):
         Modified image data
     """
     print 'Filming'
-    import ImageOps
-    gray_image = ImageOps.grayscale(image_data).convert('RGBA')
+    filmed_image = modify_photo(image_data)
+    return filmed_image
 
-    return gray_image
+def modify_photo(image_data):
+    gray_image = ImageOps.grayscale(image_data)
+    film_size = (400, 200)
+    # Image.ANTIALIAS is best for down sizing
+    gray_image_small = gray_image.resize(film_size, Image.ANTIALIAS)
+    return gray_image_small
 
 def safe_save(full_filename, new_image_data):
     """
@@ -57,10 +63,7 @@ def safe_save(full_filename, new_image_data):
         new_image_data, PIL Image data to be saved
     """
     filename, extention = os.path.splitext(full_filename)
-    # Apparently pil has an issue with LA and jpg but not RBGA
-    if new_image_data.mode in ('RGBA', 'LA'):
-        converted_image_data = new_image_data.convert('RGBA').split()[-1]
-        converted_image_data.save(filename + '_modified' + '.png')
+    new_image_data.save(filename + '_modified' + extention)
 
 if __name__ == "__main__":
     main()
