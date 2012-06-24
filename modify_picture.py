@@ -45,12 +45,49 @@ def image_film(image_data):
         Modified image data
     """
     print 'Filming'
-    filmed_image = modify_photo(image_data)
+    film_size = (400, 300)
+    border_size = 20
+    strip_upper_offset = 7
+    strip_lower_offset = 410
+    filmed_image = modify_photo(image_data, film_size)
+    filmed_image = ImageOps.expand(filmed_image, border=border_size, fill='black')
+
+    # Crop to cut half of border from right and left of image
+    crop_box = (
+        int(round(border_size/2)),
+        0,
+        film_size[0] + int(round(border_size * 1.5)),
+        film_size[1] + border_size * 2
+    )
+
+    filmed_image = filmed_image.crop(crop_box)
+    place_film_strip(filmed_image, strip_upper_offset, border_size)
+    place_film_strip(filmed_image, strip_lower_offset, border_size)
     return filmed_image
 
-def modify_photo(image_data):
+def place_film_strip(image_data, y_offset, border_size):
+    hole_distance = 15
+    for x_offest in xrange(5, image_data.size[0], hole_distance):
+        place_film_hole(image_data, (x_offest, y_offset))
+
+def place_film_hole(image_data, offset):
+    """
+    Puts film hole at offest into the image provided
+    Inputs:
+        image_data - image file to have film hole pasted
+        offset - 2 tuple with x and y of the top left corner of film hole
+    """
+    film_hole_size = (5,10)
+    insertion_location = (
+        offset[0],
+        offset[1],
+        offset[0] + film_hole_size[0],
+        offset[1] + film_hole_size[1]
+    )
+    image_data.paste('white', insertion_location)
+
+def modify_photo(image_data, film_size):
     gray_image = ImageOps.grayscale(image_data)
-    film_size = (400, 200)
     # Image.ANTIALIAS is best for down sizing
     gray_image_small = gray_image.resize(film_size, Image.ANTIALIAS)
     return gray_image_small
