@@ -38,7 +38,7 @@ def main():
 
 def image_film(image_data):
     """
-    Makes the image look like film
+    Makes the image look like 35mm film
     Inputs:
         PIL Image
     Returns:
@@ -48,13 +48,9 @@ def image_film(image_data):
     film_size = (400, 300)
     border_size = 20
     film_hole_size = (5,10)
-    # Center the strip in the border space
-    strip_upper_offset = int(round((border_size - film_hole_size[1])/2))
-    strip_lower_offset = film_size[1] + border_size + strip_upper_offset
 
     filmed_image = modify_photo(image_data, film_size)
     filmed_image = ImageOps.expand(filmed_image, border=border_size, fill='black')
-
     # Crop to cut half of border from right and left of image
     crop_box = (
         int(round(border_size/2)),
@@ -62,8 +58,12 @@ def image_film(image_data):
         film_size[0] + int(round(border_size * 1.5)),
         film_size[1] + border_size * 2
     )
-
     filmed_image = filmed_image.crop(crop_box)
+
+    # Center the strip in the border space
+    strip_upper_offset = int(round((border_size - film_hole_size[1])/2))
+    strip_lower_offset = film_size[1] + border_size + strip_upper_offset
+
     place_film_strip(filmed_image, strip_upper_offset, strip_lower_offset, film_hole_size)
     return filmed_image
 
@@ -93,13 +93,14 @@ def place_film_hole(image_data, offset, film_hole_size):
 
 def modify_photo(image_data, film_size):
     """
-    Make the image grayscale
+    Make the image grayscale and invert the colors
     All manitpulations for the origional photo go here
     """
     gray_image = ImageOps.grayscale(image_data)
     # Image.ANTIALIAS is best for down sizing
     gray_image_small = gray_image.resize(film_size, Image.ANTIALIAS)
-    return gray_image_small
+    inverted_colors = ImageOps.invert(gray_image_small)
+    return inverted_colors
 
 def safe_save(full_filename, new_image_data):
     """
