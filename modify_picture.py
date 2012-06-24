@@ -31,7 +31,7 @@ def main():
             new_image_data = image_film(image_data)
             safe_save(full_filename, new_image_data)
         except IOError:
-            print "Can not modify" + full_filename
+            print "Can not modify " + full_filename
     else:
         print 'Must enter photo in this directory'
 
@@ -45,7 +45,7 @@ def image_film(image_data):
     """
     print 'Filming'
     import ImageOps
-    gray_image = ImageOps.grayscale(image_data)
+    gray_image = ImageOps.grayscale(image_data).convert('RGBA')
 
     return gray_image
 
@@ -57,7 +57,10 @@ def safe_save(full_filename, new_image_data):
         new_image_data, PIL Image data to be saved
     """
     filename, extention = os.path.splitext(full_filename)
-    new_image_data.save(filename + '_modified' + extention)
+    # Apparently pil has an issue with LA and jpg but not RBGA
+    if new_image_data.mode in ('RGBA', 'LA'):
+        converted_image_data = new_image_data.convert('RGBA').split()[-1]
+        converted_image_data.save(filename + '_modified' + '.png')
 
 if __name__ == "__main__":
     main()

@@ -1,10 +1,7 @@
-﻿# Unique to this project #
-##########################
-.env/
-
-# Compiled source #
+﻿# Compiled source #
 ###################
 *.class
+*.pyc
 
 # Classpath file #
 ##################
@@ -25,7 +22,7 @@
 
 # Logs #
 ########
-#Not sure if this is nessassary in android
+# Not sure if this is nessassary in android
 *.log
 
 # OS generated files #
