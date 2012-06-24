@@ -16,6 +16,12 @@ def main():
         help="Picture to modify",
         metavar="FILE"
     )
+    parser.add_option(
+        "-s",
+        dest='custom_string',
+        help='String to be placed at the top of the film'
+             'Default is Kodak'
+    )
     (opts, args) = parser.parse_args()
 
     # Give user feedback if they forget an option and exit
@@ -31,6 +37,7 @@ def main():
         try:
             image_data = Image.open(full_filename)
             new_image_data = image_film(image_data)
+            add_text_header(new_image_data, text=opts.custom_string)
             safe_save(full_filename, new_image_data)
         except IOError:
             print "Can not modify " + full_filename
@@ -68,7 +75,6 @@ def image_film(image_data):
         film_hole_size
     )
 
-    add_text_header(filmed_image)
     return filmed_image
 
 def add_film_border(image_data, film_size, border_size):
@@ -92,6 +98,9 @@ def add_text_header(image_data, text='Kodak'):
     text_location = (300, 1)
     # This is white
     fill_color = 255
+    # This happens if -s wasn't set
+    if text ==None:
+        text = 'Kodak'
     draw = ImageDraw.Draw(image_data)
     draw.text(text_location, text, fill=fill_color)
 
