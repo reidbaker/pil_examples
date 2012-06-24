@@ -51,19 +51,7 @@ def image_film(image_data):
     film_hole_size = (5, 10)
 
     filmed_image = modify_photo(image_data, film_size)
-    filmed_image = ImageOps.expand(
-        filmed_image,
-        border=border_size,
-        fill='black'
-    )
-    # Crop to cut half of border from right and left of image
-    crop_box = (
-        int(round(border_size/2)),
-        0,
-        film_size[0] + int(round(border_size * 1.5)),
-        film_size[1] + border_size * 2
-    )
-    filmed_image = filmed_image.crop(crop_box)
+    filmed_image = add_film_border(filmed_image, film_size, border_size)
 
     # Center strip in the border space
     strip_upper_offset = int(round((border_size - film_hole_size[1])/2))
@@ -79,8 +67,26 @@ def image_film(image_data):
         strip_lower_offset,
         film_hole_size
     )
+
     add_text_header(filmed_image)
     return filmed_image
+
+def add_film_border(image_data, film_size, border_size):
+    image_data = ImageOps.expand(
+        image_data,
+        border=border_size,
+        fill='black'
+    )
+    # Crop to cut half of border from right and left of image
+    crop_box = (
+        int(round(border_size/2)),
+        0,
+        film_size[0] + int(round(border_size * 1.5)),
+        film_size[1] + border_size * 2
+    )
+    image_data = image_data.crop(crop_box)
+    return image_data
+
 
 def add_text_header(image_data, text='Kodak'):
     text_location = (300, 1)
