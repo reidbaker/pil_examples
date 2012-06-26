@@ -150,7 +150,7 @@ def place_film_hole(image_data, offset, film_hole_size):
 def round_corner(radius, fill):
     """
     Draw a round corner
-    This code came from http://nadiana.com/pil-tutorial-basic-advanced-drawing#DrawingRoundedCornersRectangle
+    This code came from http://nadiana.com/pil-tutorial-basic-advanced-drawing
     """
     corner = Image.new('RGBA', (radius, radius), (0, 0, 0, 0))
     draw = ImageDraw.Draw(corner)
@@ -160,7 +160,7 @@ def round_corner(radius, fill):
 def round_rectangle(size, radius, fill):
     """
     Draw a rounded rectangle
-    This code came from http://nadiana.com/pil-tutorial-basic-advanced-drawing#DrawingRoundedCornersRectangle
+    This code came from http://nadiana.com/pil-tutorial-basic-advanced-drawing
     """
     width, height = size
     rectangle = Image.new('RGBA', size, fill)
