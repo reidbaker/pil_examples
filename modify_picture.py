@@ -36,7 +36,7 @@ def main():
     if full_filename != None:
         try:
             image_data = Image.open(full_filename)
-            new_image_data = image_film(image_data)
+            new_image_data = filmify_image(image_data)
             add_text_header(new_image_data, text=opts.custom_string)
             safe_save(full_filename, new_image_data)
         except IOError:
@@ -44,7 +44,7 @@ def main():
     else:
         print 'Must enter photo in this directory'
 
-def image_film(image_data):
+def filmify_image(image_data):
     """
     Makes the image look like 35mm film
     Inputs:
@@ -78,6 +78,13 @@ def image_film(image_data):
     return filmed_image
 
 def add_film_border(image_data, film_size, border_size):
+    """
+    Creates a black border around the image
+    Inputs
+        image_data - image to be manipulated
+        film_size - size of the internal picture
+        border_size - how wide you want the border on the top and bottem to be
+    """
     image_data = ImageOps.expand(
         image_data,
         border=border_size,
