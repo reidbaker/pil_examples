@@ -85,6 +85,8 @@ def add_film_border(image_data, film_size, border_size):
         image_data - image to be manipulated
         film_size - size of the internal picture
         border_size - how wide you want the border on the top and bottom to be
+    Output
+        image with border
     """
     image_data = ImageOps.expand(
         image_data,
@@ -115,7 +117,7 @@ def add_text_header(image_data, text='Kodak'):
     # This is white
     fill_color = 255
     # This happens if -s wasn't set
-    if text ==None:
+    if text == None:
         text = 'Kodak'
     draw = ImageDraw.Draw(image_data)
     draw.text(text_location, text, fill=fill_color)
@@ -141,7 +143,9 @@ def place_film_hole(image_data, offset, film_hole_size):
         Original image with rectangle in location based on the offset
     """
     corner_radius = 2
-    image_data.paste(round_rectangle(film_hole_size, corner_radius, 'white'), offset)
+    film_hole_color = 'white'
+    film_hole = round_rectangle(film_hole_size, corner_radius, film_hole_color)
+    image_data.paste(film_hole, offset)
 
 def round_corner(radius, fill):
     """
@@ -162,7 +166,8 @@ def round_rectangle(size, radius, fill):
     rectangle = Image.new('RGBA', size, fill)
     corner = round_corner(radius, fill)
     rectangle.paste(corner, (0, 0))
-    rectangle.paste(corner.rotate(90), (0, height - radius)) # Rotate the corner and paste it
+    # Rotate the corner and paste it
+    rectangle.paste(corner.rotate(90), (0, height - radius))
     rectangle.paste(corner.rotate(180), (width - radius, height - radius))
     rectangle.paste(corner.rotate(270), (width - radius, 0))
     return rectangle
