@@ -7,7 +7,7 @@ from PIL import ImageDraw
 from PIL import ImageOps
 
 def main():
-    """Retrives file entered, manipulates it and saves a copy with a new name"""
+    """Retrieves file entered, manipulates it and saves a copy with a new name"""
     # Parse options
     parser = optparse.OptionParser()
     parser.add_option(
@@ -83,7 +83,7 @@ def add_film_border(image_data, film_size, border_size):
     Inputs
         image_data - image to be manipulated
         film_size - size of the internal picture
-        border_size - how wide you want the border on the top and bottem to be
+        border_size - how wide you want the border on the top and bottom to be
     """
     image_data = ImageOps.expand(
         image_data,
@@ -102,6 +102,14 @@ def add_film_border(image_data, film_size, border_size):
 
 
 def add_text_header(image_data, text='Kodak'):
+    """
+    Add text to the top of the document
+    Inputs
+        image_data - image to have text added
+        text - string to add
+    """
+    # TODO add string wrapping for long strings
+    # TODO figure this out programatically
     text_location = (300, 1)
     # This is white
     fill_color = 255
@@ -113,19 +121,22 @@ def add_text_header(image_data, text='Kodak'):
 
 def place_film_strip(image_data, y_offset_upper, y_offset_lower, film_hole_size):
     """
-    Create strip of film_holes at y_offest
+    Create strip of film_holes at y_offset
     """
+    # TODO make rectangles rounded
     hole_distance = 15
-    for x_offest in xrange(5, image_data.size[0], hole_distance):
-        place_film_hole(image_data, (x_offest, y_offset_upper), film_hole_size)
-        place_film_hole(image_data, (x_offest, y_offset_lower), film_hole_size)
+    for x_offset in range(5, image_data.size[0], hole_distance):
+        place_film_hole(image_data, (x_offset, y_offset_upper), film_hole_size)
+        place_film_hole(image_data, (x_offset, y_offset_lower), film_hole_size)
 
 def place_film_hole(image_data, offset, film_hole_size):
     """
-    Puts film hole at offest into the image provided
+    Puts film hole at offset into the image provided
     Inputs:
         image_data - image file to have film hole pasted
         offset - 2 tuple with x and y of the top left corner of film hole
+    Outputs
+        Original image with rectangle in location based on the offset
     """
     insertion_location = (
         offset[0],
@@ -138,7 +149,7 @@ def place_film_hole(image_data, offset, film_hole_size):
 def modify_photo(image_data, film_size):
     """
     Make the image grayscale and invert the colors
-    All manitpulations for the origional photo go here
+    All manipulations for the original photo go here
     """
     gray_image = ImageOps.grayscale(image_data)
     # Image.ANTIALIAS is best for down sizing
