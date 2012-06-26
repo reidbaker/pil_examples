@@ -53,6 +53,7 @@ def filmify_image(image_data):
         Modified image data
     """
     print 'Filming'
+    # Size of photo in side the film
     film_size = (400, 300)
     border_size = 30
     film_hole_size = (5, 10)
@@ -151,11 +152,12 @@ def modify_photo(image_data, film_size):
     Make the image grayscale and invert the colors
     All manipulations for the original photo go here
     """
-    gray_image = ImageOps.grayscale(image_data)
+    modified_image = ImageOps.grayscale(image_data)
     # Image.ANTIALIAS is best for down sizing
-    gray_image_small = gray_image.resize(film_size, Image.ANTIALIAS)
-    inverted_colors = ImageOps.invert(gray_image_small)
-    return inverted_colors
+    modified_image = modified_image.resize(film_size, Image.ANTIALIAS)
+    modified_image = ImageOps.invert(modified_image)
+    modified_image = ImageOps.flip(modified_image)
+    return modified_image
 
 def safe_save(full_filename, new_image_data):
     """
