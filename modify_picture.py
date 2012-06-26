@@ -56,7 +56,7 @@ def filmify_image(image_data):
     # Size of photo in side the film
     film_size = (400, 300)
     border_size = 30
-    film_hole_size = (5, 10)
+    film_hole_size = (8, 10)
 
     filmed_image = modify_photo(image_data, film_size)
     filmed_image = add_film_border(filmed_image, film_size, border_size)
@@ -124,9 +124,9 @@ def place_film_strip(image_data, y_offset_upper, y_offset_lower, film_hole_size)
     """
     Create strip of film_holes at y_offset
     """
-    # TODO make rectangles rounded
     hole_distance = 15
-    for x_offset in range(5, image_data.size[0], hole_distance):
+    left_film_buffer = 2
+    for x_offset in range(left_film_buffer, image_data.size[0], hole_distance):
         place_film_hole(image_data, (x_offset, y_offset_upper), film_hole_size)
         place_film_hole(image_data, (x_offset, y_offset_lower), film_hole_size)
 
@@ -136,16 +136,36 @@ def place_film_hole(image_data, offset, film_hole_size):
     Inputs:
         image_data - image file to have film hole pasted
         offset - 2 tuple with x and y of the top left corner of film hole
+        film_hole_size - size of the rectangle to be made
     Outputs
         Original image with rectangle in location based on the offset
     """
-    insertion_location = (
-        offset[0],
-        offset[1],
-        offset[0] + film_hole_size[0],
-        offset[1] + film_hole_size[1]
-    )
-    image_data.paste('white', insertion_location)
+    corner_radius = 2
+    image_data.paste(round_rectangle(film_hole_size, corner_radius, 'white'), offset)
+
+def round_corner(radius, fill):
+    """
+    Draw a round corner
+    This code came from http://nadiana.com/pil-tutorial-basic-advanced-drawing#DrawingRoundedCornersRectangle
+    """
+    corner = Image.new('RGBA', (radius, radius), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(corner)
+    draw.pieslice((0, 0, radius * 2, radius * 2), 180, 270, fill=fill)
+    return corner
+
+def round_rectangle(size, radius, fill):
+    """
+    Draw a rounded rectangle
+    This code came from http://nadiana.com/pil-tutorial-basic-advanced-drawing#DrawingRoundedCornersRectangle
+    """
+    width, height = size
+    rectangle = Image.new('RGBA', size, fill)
+    corner = round_corner(radius, fill)
+    rectangle.paste(corner, (0, 0))
+    rectangle.paste(corner.rotate(90), (0, height - radius)) # Rotate the corner and paste it
+    rectangle.paste(corner.rotate(180), (width - radius, height - radius))
+    rectangle.paste(corner.rotate(270), (width - radius, 0))
+    return rectangle
 
 def modify_photo(image_data, film_size):
     """
