@@ -1,6 +1,6 @@
 """Transformations on images"""
-import numpy
-
+from numpy import random
+from numpy import array
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageOps
@@ -11,7 +11,7 @@ def tileify(image_data, num_blocks, max_shift):
     row_block_size = round(height / num_blocks)
     col_block_size = round(width / num_blocks)
     negitive_image = ImageOps.invert(image_data)
-    pixels = numpy.array(image_data)
+    pixels = array(image_data)
     for row in xrange(num_blocks):
         inner_row_val = int(row_block_size * row)
         outer_row_val = int(row_block_size * row + row_block_size)
@@ -22,14 +22,22 @@ def tileify(image_data, num_blocks, max_shift):
                 inner_row_val:outer_row_val,
                 inner_col_val:outer_col_val
             ]
-            x_offset = numpy.random.random_integers(-max_shift, max_shift)
-            y_offset = numpy.random.random_integers(-max_shift, max_shift)
-            location = (
-                inner_col_val + y_offset,
-                inner_row_val + x_offset
+            location = calculate_random_location(
+                inner_row_val,
+                inner_col_val,
+                max_shift
             )
             negitive_image.paste(Image.fromarray(block), location)
     return negitive_image
+
+def calculate_random_location(x, y, max_shift):
+    x_offset = random.random_integers(-max_shift, max_shift)
+    y_offset = random.random_integers(-max_shift, max_shift)
+    location = (
+        y + y_offset,
+        x + x_offset
+    )
+    return location
 
 def filmify_image(image_data):
     """
