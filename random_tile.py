@@ -43,18 +43,23 @@ def tileify(image_data, num_blocks):
     block_size = round(height / num_blocks)
     negitive_image = ImageOps.invert(image_data)
     pixels = numpy.array(image_data)
-    for i in xrange(num_blocks):
-        inner_block_edge = int(block_size * i)
-        outer_block_edge = int(block_size * i + block_size)
-        block = pixels[inner_block_edge:outer_block_edge, inner_block_edge:outer_block_edge]
-        x_offset = numpy.random.random_integers(1,10)
-        y_offset = numpy.random.random_integers(1,10)
-        location = (
-            inner_block_edge + x_offset,
-            inner_block_edge + y_offset
-        )
-        print location
-        negitive_image.paste(Image.fromarray(block), location)
+    for row in xrange(num_blocks):
+        inner_row_val = int(block_size * row)
+        outer_row_val = int(block_size * row + block_size)
+        for col in xrange(num_blocks):
+            inner_col_val = int(block_size * col)
+            outer_col_val = int(block_size * col + block_size)
+            block = pixels[
+                inner_row_val:outer_row_val,
+                inner_col_val:outer_col_val
+            ]
+            x_offset = numpy.random.random_integers(1,10)
+            y_offset = numpy.random.random_integers(1,10)
+            location = (
+                inner_col_val + y_offset,
+                inner_row_val + x_offset
+            )
+            negitive_image.paste(Image.fromarray(block), location)
     return negitive_image
 
 def safe_save(full_filename, new_image_data):
