@@ -52,7 +52,7 @@ def main():
     if full_filename != None:
         try:
             image_data = Image.open(full_filename)
-            new_image_data = tileify(image_data, 20, max_shift)
+            new_image_data = tileify(image_data, num_tiles, max_shift)
             safe_save(full_filename, new_image_data)
         except IOError:
             print "Can not modify " + full_filename
