@@ -28,6 +28,7 @@ class TestTileify:
             assert y <= start_y + max_shift
 
 class TestFilmify:
+    # TODO either rename this file or move this test
     def test_smoke(self):
         """
         Smoke test to make sure filmify_image runs without errors
