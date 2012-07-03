@@ -6,7 +6,7 @@ class TestTileify:
     def test_smoke(self):
         """
         Smoke test to make sure tileify runs without errors
-        REQUIRES photo named test_photo.jpg to be in current dir
+        REQUIRES photo named test_photo.jpg to be in current directory
         """
         image_data = Image.open("test_photo.jpg")
         num_tiles = 10
