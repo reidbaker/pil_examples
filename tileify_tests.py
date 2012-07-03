@@ -1,6 +1,7 @@
 import Image
 from image_transforms import tileify
 from image_transforms import calculate_random_location
+from image_transforms import filmify_image
 
 class TestTileify:
     def test_smoke(self):
@@ -25,3 +26,13 @@ class TestTileify:
             assert x <= start_x + max_shift
             assert y >= start_y - max_shift
             assert y <= start_y + max_shift
+
+class TestFilmify:
+    def test_smoke(self):
+        """
+        Smoke test to make sure filmify_image runs without errors
+        REQUIRES photo named test_photo.jpg to be in current directory
+        """
+        image_data = Image.open("test_photo.jpg")
+        new_image_data = filmify_image(image_data)
+        assert new_image_data
