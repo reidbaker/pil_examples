@@ -6,11 +6,16 @@ from PIL import ImageDraw
 from PIL import ImageOps
 
 def tileify(image_data, num_blocks, max_shift):
+    """
+    Breaks image up into rectangles and shifts them a random distance
+    Areas not covered by the moved rectangles are the negative of
+    the original image
+    """
     width = image_data.size[0]
     height = image_data.size[1]
     row_block_size = round(height / num_blocks)
     col_block_size = round(width / num_blocks)
-    negitive_image = ImageOps.invert(image_data)
+    negative_image = ImageOps.invert(image_data)
     pixels = array(image_data)
     for row in xrange(num_blocks):
         inner_row_val = int(row_block_size * row)
@@ -27,10 +32,17 @@ def tileify(image_data, num_blocks, max_shift):
                 inner_col_val,
                 max_shift
             )
-            negitive_image.paste(Image.fromarray(block), location)
-    return negitive_image
+            negative_image.paste(Image.fromarray(block), location)
+    return negative_image
 
 def calculate_random_location(x, y, max_shift):
+    """
+    Calculates random location near some starting point
+    Inputs
+        x - coordinate point where 0,0 is upper left corner
+        y - coordinate point where 0,0 is upper left corner
+        max_shift - the furthest distance from the point to shift
+    """
     x_offset = random.random_integers(-max_shift, max_shift)
     y_offset = random.random_integers(-max_shift, max_shift)
     location = (

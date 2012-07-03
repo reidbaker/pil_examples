@@ -3,7 +3,11 @@ from image_transforms import tileify
 from image_transforms import calculate_random_location
 
 class TestTileify:
-    def test_smoke(self):       # py.test looks for functions that start with test_
+    def test_smoke(self):
+        """
+        Smoke test to make sure tileify runs without errors
+        REQUIRES photo named test_photo.jpg to be in current dir
+        """
         image_data = Image.open("test_photo.jpg")
         num_tiles = 10
         max_shift = 30
