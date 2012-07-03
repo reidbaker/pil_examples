@@ -8,3 +8,5 @@ python random_tile.py -f test_photo.jpg -m 10 -n 20
 
 Test files by running
 py.test tileify_tests.py
+
+The most up to date source can be found at https://github.com/reidbaker
