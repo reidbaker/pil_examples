@@ -1,4 +1,8 @@
-﻿# Compiled source #
+﻿# Local ignore #
+################
+pretty_photo_*.jpg
+
+# Compiled source #
 ###################
 *.class
 *.pyc
